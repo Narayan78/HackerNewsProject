@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:news/provider/news_key_provider.dart';
-import 'package:news/views/home_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:news/view/home_page.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => NewsProvider(),
-      child: NewsApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color.fromARGB(255, 190, 185, 185),
+    statusBarIconBrightness: Brightness.dark,
+  ));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class NewsApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'News App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
+    return ScreenUtilInit(
+      builder: (BuildContext context, Widget? child) {
+        return const GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+        );
+      },
     );
   }
 }
